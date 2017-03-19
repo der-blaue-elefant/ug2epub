@@ -9,7 +9,8 @@ class SheetMusic:
 	def __init__(self,filepath):
 		with open (filepath, 'r') as infile:
 			self.parse_html(infile.read())
-		self.tabs=SheetMusic.add_structure(self.tabs)
+		self.tabs = SheetMusic.add_structure(self.tabs)
+		self.add_h1title()
 
 	def parse_html(self,content):
 		soup = BeautifulSoup(content, 'html.parser')
@@ -47,6 +48,9 @@ class SheetMusic:
 		strout = strout.replace('</p>','</p>\n')
 		strout = strout.replace(' ','&nbsp;') #aligning chords & lyrics
 		return strout
+
+	def add_h1title(self):
+		self.tabs='<h1>'+self.title+'</h1>'+self.tabs
 
 	def create_xhtml(self,filename):
 		'''

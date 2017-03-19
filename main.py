@@ -13,32 +13,27 @@ for infile in os.listdir('.'):
 		'title':SM.title,\
 		'file':random_filename}
 		sheets.append(sheet)
-sheets.sort(key=lambda x: x['title'])
+sheets.sort(key=lambda x: x['title']) # sort by title ascending
 
+# see https://github.com/aerkalov/ebooklib for details
 book = epub.EpubBook()
+
 book.set_identifier(str(uuid.uuid4()))
 book.set_title('My Favourite Sheets')
 book.set_language('en')
 book.add_author('Your Name Here')
 
+book.spine = ['nav']
+
 for s in sheets:
 	c = epub.EpubHtml(title=s['title'], file_name=s['file'], lang='en')
 	c.content = s['tabs']
 	book.add_item(c)
+	book.spine=book.spine+[c]
 
 # add default NCX and Nav file
 book.add_item(epub.EpubNcx())
 book.add_item(epub.EpubNav())
 
-# define CSS style
-style = 'BODY {color: white;}'
-nav_css = epub.EpubItem(uid="style_nav", file_name="style/nav.css", media_type="text/css", content=style)
-
-# add CSS file
-book.add_item(nav_css)
-
-# basic spine
-book.spine = ['nav', c]
-
 # write to the file
-epub.write_epub('test.epub', book, {})
+epub.write_epub('my_favourite_sheets.epub', book, {})
