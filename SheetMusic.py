@@ -19,21 +19,10 @@ class SheetMusic:
 			self.title = regex.groups()[0] # just the title
 			self.author = regex.group()[1] # just the author
 		except AttributeError: # does not match the regex
-			self.title = soup.title.string
+			self.title = soup.title.title()
 			self.author = ''
-		self.title = SheetMusic.pretty_title(self.title)
+		self.title = self.title.title() # capitalises the first letter of every word
 		self.tabs = soup.find(attrs=self.TABS_IDENTIFIER).text
-
-	@staticmethod
-	def pretty_title(ugly_title):
-		'''
-		I'd love to see a function to convert strings into a pretty
-		title format like 'This is Pretty Title' instead of 'THIS UGLY
-		TITLE' or 'this ugly title'. Like to contribute?
-		'''
-		pretty_title = ugly_title
-		# INSERT YOUR CODE HERE
-		return pretty_title
 
 	@staticmethod
 	def add_structure(strin):
